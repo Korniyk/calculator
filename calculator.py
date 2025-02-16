@@ -21,6 +21,23 @@ class CalculatorModel:
         self.expression = ""
 
 
+class CalculatorController:
+    def __init__(self, model, view):
+        self.model = model
+        self.view = view
+
+    def handle_button_click(self, char):
+        if char == "=":
+            result = self.model.evaluate_expression()
+            self.view.update_entry(result)
+        elif char == "C":
+            self.model.clear_expression()
+            self.view.clear_entry()
+        else:
+            self.model.add_to_expression(char)
+            self.view.append_to_entry(char)
+
+
 class CalculatorApp:
     def __init__(self, root):
         self.root = root
@@ -29,6 +46,7 @@ class CalculatorApp:
         self.root.configure(bg="#f0f0f0")
 
         self.model = CalculatorModel()
+        self.controller = CalculatorController(self.model, self)
         self.create_widgets()
 
     def create_widgets(self):
@@ -66,7 +84,7 @@ class CalculatorApp:
                 bg="#e6e6e6",
                 relief=tk.RAISED,
                 bd=5,
-                command=lambda t=text: self.on_button_click(t),
+                command=lambda t=text: self.controller.handle_button_click(t),
             )
             btn.grid(
                 row=row, column=col, ipadx=15, ipady=15, sticky="nsew", padx=2, pady=2
@@ -77,17 +95,15 @@ class CalculatorApp:
         for i in range(4):
             self.root.grid_columnconfigure(i, weight=1)
 
-    def on_button_click(self, char):
-        if char == "=":
-            result = self.model.evaluate_expression()
-            self.entry.delete(0, tk.END)
-            self.entry.insert(tk.END, str(result))
-        elif char == "C":
-            self.model.clear_expression()
-            self.entry.delete(0, tk.END)
-        else:
-            self.model.add_to_expression(char)
-            self.entry.insert(tk.END, char)
+    def update_entry(self, value):
+        self.entry.delete(0, tk.END)
+        self.entry.insert(tk.END, str(value))
+
+    def clear_entry(self):
+        self.entry.delete(0, tk.END)
+
+    def append_to_entry(self, value):
+        self.entry.insert(tk.END, value)
 
 
 if __name__ == "__main__":
