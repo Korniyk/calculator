@@ -12,7 +12,7 @@ class CalculatorApp:
 
     def create_widgets(self):
         self.entry = tk.Entry(
-            self.root, font=("Arial", 18), justify="right", bd=10, relief=tk.RIDGE
+            self.root, font=("Arial", 18), justify="rіght", bd=10, relief=tk.RIDGE
         )
         self.entry.grid(row=0, column=0, columnspan=4, ipadx=8, ipady=8, pady=10)
 
