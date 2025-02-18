@@ -1,1 +1,1 @@
-Added installation package for the Calculator application project
+Added installation package for the Calculator application project.
